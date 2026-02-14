@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情人节祝福语</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .btn {
+            padding: 20px 50px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 滚动条美化 */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="showBlessing()">情人节祝福语</button>
+
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-text" id="modalText"></div>
+        </div>
+    </div>
+
+    <script>
+        const blessings = [
+            '今天 情人节，登了孩子QQ🌹🌹🌹看看娃儿平时跟谁聊天👍👍👍本以为能有几个女孩子，结果没想到看到的是你们这帮臭打Phigros  Arcaea  osu!  Malody  maimaiDX  CHUNITHM  O.N.G.E.K.I.  Sound Voltex  WACCA  范式：起源  Rotaeno  Dynamix  Lanota  Groove Coaster  Muse Dash  冰与火之舞  太鼓の達人  舞战纪  舞立方EVO  beatmania  周五夜放克  Milthm  初音未来：缤纷舞台  Rizline  RYCEAM  Cytus  Cytus2  DEEMO  DEEMO2  兰空VOEZ  Orzmic  TAKUMI³   跳舞的线 notanote的，我就放心了，几把孩子这辈子算是完了👍👍👍',
+            '今天是情人节，登了孩子的wx群🌹🌹🌹看看娃儿平时跟谁聊天👍👍👍本以为能有几个女孩子聊聊天🌹🌹🌹结果没想到看到的是你们这帮gay佬二刺猿，我很放心了🌹🌹🌹几把孩子这辈子算是完了👍👍👍',
+            '2月14日常常被大家认为是情人节，这是一个常见的误区，事实上，2是指两个人，1是指一台机子，4是指能打四首歌曲，而舞萌DX正好是这样的，所以大家，2月14日其实是 舞萌地插节  。',
+            '原神牛逼'
+        ];
+
+        function showBlessing() {
+            const randomIndex = Math.floor(Math.random() * blessings.length);
+            const text = blessings[randomIndex];
+            document.getElementById('modalText').textContent = text;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (!event || event.target === document.getElementById('modal') || event.target.classList.contains('modal-close')) {
+                document.getElementById('modal').classList.remove('active');
+            }
+        }
+
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
